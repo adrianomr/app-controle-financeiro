@@ -36,7 +36,6 @@ class Screen2State extends State<Screen2> {
         onPressed: () {
           setState(() {
             itens.add(item);
-            item = "";
             print("added item -> " + item);
           });
         },
@@ -62,6 +61,9 @@ class Screen2State extends State<Screen2> {
               return Dismissible(
                 key: Key(index.toString()),
                 child: Text(itens[index]),
+                onDismissed: (direction){
+                  itens.removeAt(index);
+                },
               );
             }),
           )
