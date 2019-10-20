@@ -1,3 +1,4 @@
+import 'package:controle_financeiro/model/product.dart';
 import 'package:flutter/material.dart';
 
 class Screen2 extends StatefulWidget {
@@ -11,6 +12,7 @@ class Screen2State extends State<Screen2> {
   @override
   void initState() {
     super.initState();
+    Product product = new Product("", "", List());
     itens.add("Teste 1");
     itens.add("Teste 2");
     itens.add("Teste 3");
