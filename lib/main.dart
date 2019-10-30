@@ -1,6 +1,6 @@
 import 'package:controle_financeiro/theme/style.dart';
 import 'package:flutter/material.dart';
-import 'screen2.dart';
+import 'screen/screen2.dart';
 
 void main() => runApp(MyApp());
 
