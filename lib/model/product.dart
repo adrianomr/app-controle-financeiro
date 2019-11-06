@@ -1,14 +1,9 @@
-class Product{
-  String _id;
-  double _price;
-  String _name;
+import 'package:controle_financeiro/model/base/product-base.dart';
 
-  Product(this._id, this._name, this._price);
-
-  String get id => _id;
-
-  double get price => _price;
-
-  String get name => _name;
-
+class Product extends ProductBase {
+  Product({
+    int id,
+    String descricao,
+    int valor,
+  }) : super(id: id, descricao: descricao, valor: valor);
 }

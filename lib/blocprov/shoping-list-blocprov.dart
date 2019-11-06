@@ -1,17 +1,22 @@
 import 'package:controle_financeiro/bloc/shopping-list-bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ShoppingListBlocprov extends InheritedWidget {
-  final ShoppingListBloc bloc;
+class ShoppingListBlocprov extends StatelessWidget {
+  Widget child;
 
-  ShoppingListBlocprov({Key key, this.bloc, child})
-      : super(key: key, child: child);
+  ShoppingListBlocprov({Widget this.child});
 
   @override
-  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MultiProvider(
+      providers: [ChangeNotifierProvider<ShoppingListBloc>.value(
+          value: ShoppingListBloc()
+      )
+      ],
+      child: child,
+    );;
+  }
 
-  static ShoppingListBloc of(BuildContext context) =>
-      (context.inheritFromWidgetOfExactType(ShoppingListBlocprov)
-              as ShoppingListBlocprov)
-          .bloc;
 }
