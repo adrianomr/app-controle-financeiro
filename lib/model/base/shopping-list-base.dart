@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:controle_financeiro/model/base/product-base.dart';
-
 import '../product.dart';
 
 ShoppingListBase shoppingListBaseFromJson(String str) =>
@@ -24,7 +22,7 @@ class ShoppingListBase {
   factory ShoppingListBase.fromJson(Map<String, dynamic> json) =>
       ShoppingListBase(
         product: List<Product>.from(
-            json["product"].map((x) => ProductBase.fromJson(x))),
+            json["product"].map((x) => Product.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

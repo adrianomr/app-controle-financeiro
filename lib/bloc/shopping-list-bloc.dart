@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:controle_financeiro/bloc/product-bloc.dart';
 import 'package:controle_financeiro/model/product.dart';
 import 'package:controle_financeiro/model/shopping-list.dart';
@@ -10,10 +12,17 @@ class ShoppingListBloc extends ChangeNotifier {
 
   ShoppingListBloc() {
     _editableProductBloc = new ProductBloc();
-    if (_shoppingList == null) {
-      getShoppingList();
-      _shoppingList = ShoppingList(product: new List());
-    }
+    _shoppingList = ShoppingList();
+    getShoppingList().then((String jsonData) {
+//        descomentar quando ajsutar o backend
+//        _shoppingList.fromJson(json.decode(jsonData));
+      if (_shoppingList.calls == 0) {
+        print('data' + jsonData);
+        _shoppingList.fromJson(json.decode(
+            '{"product":[{"id":1,"descricao":"Produto1","valor":10.0},{"id":2,"descricao":"Produto1","valor":10.0}]}'));
+      }
+      this.notifyListeners();
+    });
   }
 
   addProduct() {
