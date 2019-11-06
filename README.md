@@ -17,3 +17,7 @@ https://medium.com/flutter-community/working-with-apis-in-flutter-8745968103e9
 Singleton
 
 https://forum.flutterando.com.br/d/59-criando-singleton-com-dart-flutter
+
+Model Generator
+
+https://app.quicktype.io/

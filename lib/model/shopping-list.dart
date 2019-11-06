@@ -13,4 +13,16 @@ class ShoppingList extends ShoppingListBase {
 
   ShoppingList._internalConstructor({List<Product> product})
       : super(product: product);
+
+  ShoppingList fromJson(Map<String, dynamic> json) {
+    ShoppingListBase base = ShoppingListBase.fromJson(json);
+    _shoppingList.product.addAll(base.product);
+    _shoppingList;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return super.toJson();
+  }
+
 }

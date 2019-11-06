@@ -8,17 +8,18 @@ import 'package:controle_financeiro/model/base/product-base.dart';
 
 import '../product.dart';
 
+ShoppingListBase shoppingListBaseFromJson(String str) =>
+    ShoppingListBase.fromJson(json.decode(str));
+
+String shoppingListBaseToJson(ShoppingListBase data) =>
+    json.encode(data.toJson());
+
 class ShoppingListBase {
   List<Product> product;
 
   ShoppingListBase({
     this.product,
   });
-
-  factory ShoppingListBase.fromRawJson(String str) =>
-      ShoppingListBase.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory ShoppingListBase.fromJson(Map<String, dynamic> json) =>
       ShoppingListBase(
@@ -27,6 +28,6 @@ class ShoppingListBase {
       );
 
   Map<String, dynamic> toJson() => {
-        "product": List<dynamic>.from(product.map((x) => x.toJson())),
-      };
+    "product": List<dynamic>.from(product.map((x) => x.toJson())),
+  };
 }
