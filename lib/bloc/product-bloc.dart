@@ -1,4 +1,5 @@
 import 'package:controle_financeiro/model/product.dart';
+import 'package:controle_financeiro/service/product-service.dart';
 
 class ProductBloc {
   Product product;
@@ -11,7 +12,14 @@ class ProductBloc {
     product.descricao = description;
   }
 
-  void newProduct() {
+  newProduct() {
     product = new Product(descricao: "");
   }
+
+  addProduct() {
+    createProduct(product);
+    print("added item -> " + product.toJson().toString());
+    newProduct();
+  }
+
 }

@@ -15,4 +15,8 @@ class Product extends ProductBase {
     return Product.fromBase(base);
   }
 
+  String productToJson() {
+    return productBaseToJson(this);
+  }
+
 }

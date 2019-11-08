@@ -17,9 +17,9 @@ class ShoppingListBloc extends ChangeNotifier {
 //        descomentar quando ajsutar o backend
 //        _shoppingList.fromJson(json.decode(jsonData));
       if (_shoppingList.calls == 0) {
+        jsonData = jsonData.replaceAll("content", "product");
         print('data' + jsonData);
-        _shoppingList.fromJson(json.decode(
-            '{"product":[{"id":1,"descricao":"Produto1","valor":10.0},{"id":2,"descricao":"Produto1","valor":10.0}]}'));
+        _shoppingList.fromJson(json.decode(jsonData));
       }
       this.notifyListeners();
     });
@@ -27,9 +27,8 @@ class ShoppingListBloc extends ChangeNotifier {
 
   addProduct() {
     shoppingList.product.add(_editableProductBloc.product);
-    print("added item -> " + _editableProductBloc.product.toJson().toString());
+    _editableProductBloc.addProduct();
     print("shopping list -> " + _shoppingList.toJson().toString());
-    _editableProductBloc.newProduct();
     notifyListeners();
   }
 
