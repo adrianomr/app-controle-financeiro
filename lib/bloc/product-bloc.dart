@@ -1,4 +1,4 @@
-import 'package:controle_financeiro/model/product.dart';
+import 'package:controle_financeiro/models/model/product.dart';
 import 'package:controle_financeiro/service/product-service.dart';
 
 class ProductBloc {
@@ -9,11 +9,12 @@ class ProductBloc {
   }
 
   Product editProduct(String description) {
-    product.descricao = description;
+    product.description = description;
   }
 
   newProduct() {
-    product = new Product(descricao: "");
+    product = new Product();
+    product.description = '';
   }
 
   addProduct() {

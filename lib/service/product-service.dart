@@ -1,20 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:controle_financeiro/model/base/product-base.dart';
-import 'package:controle_financeiro/model/product.dart';
+import 'package:controle_financeiro/models/model/product.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> getShoppingList() async {
   final response = await http
-      .get('https://ar-controle-financeiro.herokuapp.com/shopping-item');
+      .get('https://ar-controle-financeiro.herokuapp.com/product');
   print('shopping itens:' + response.body);
   return response.body;
 }
 
 Future<Product> createProduct(Product product) async {
   final response = await http.post(
-      'https://ar-controle-financeiro.herokuapp.com/shopping-item',
+      'https://ar-controle-financeiro.herokuapp.com/product',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-      body: product.productToJson());
-  return Product.fromBase(productBaseFromJson(response.body));
+      body: product.toJson());
+  return Product.fromJson(json.decode(response.body));
 }

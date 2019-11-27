@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:controle_financeiro/bloc/product-bloc.dart';
-import 'package:controle_financeiro/model/product.dart';
-import 'package:controle_financeiro/model/shopping-list.dart';
+import 'package:controle_financeiro/models/model/product.dart';
+import 'package:controle_financeiro/models/model/shoppingList.dart';
+import 'package:controle_financeiro/models/model/shoppingListItem.dart';
 import 'package:controle_financeiro/service/shopping-list-service.dart';
 import 'package:flutter/foundation.dart';
 
@@ -16,17 +17,19 @@ class ShoppingListBloc extends ChangeNotifier {
     getShoppingList().then((String jsonData) {
 //        descomentar quando ajsutar o backend
 //        _shoppingList.fromJson(json.decode(jsonData));
-      if (_shoppingList.calls == 0) {
-        jsonData = jsonData.replaceAll("content", "product");
+//      if (_shoppingList.calls == 0) {
+      jsonData = jsonData.replaceAll("content", "product.json");
         print('data' + jsonData);
-        _shoppingList.fromJson(json.decode(jsonData));
-      }
+      _shoppingList = ShoppingList.fromJson(json.decode(jsonData));
+//      }
       this.notifyListeners();
     });
   }
 
   addProduct() {
-    shoppingList.product.add(_editableProductBloc.product);
+    ShoppingListItem item = new ShoppingListItem();
+    item.product = _editableProductBloc.product;
+    shoppingList.shoppingListItems.add(item);
     _editableProductBloc.addProduct();
     print("shopping list -> " + _shoppingList.toJson().toString());
     notifyListeners();
@@ -39,15 +42,15 @@ class ShoppingListBloc extends ChangeNotifier {
   ShoppingList get shoppingList => _shoppingList;
 
   int getCountItens() {
-    return shoppingList.product.length;
+    return shoppingList.shoppingListItems.length;
   }
 
   Product getProduct(int index) {
-    return shoppingList.product[index];
+    return shoppingList.shoppingListItems[index].product;
   }
 
   void removeProduct(int index) {
-    shoppingList.product.removeAt(index);
+    shoppingList.shoppingListItems.removeAt(index);
     notifyListeners();
   }
 

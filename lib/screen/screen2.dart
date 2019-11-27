@@ -31,7 +31,7 @@ class Screen2 extends StatelessWidget {
               },
               controller: TextEditingController(text: shoppingListBloc
                   .getEditableProduct()
-                  .descricao),
+                  .description),
             ),
             Expanded(
                 child: SizedBox(
@@ -43,7 +43,7 @@ class Screen2 extends StatelessWidget {
                           key: Key(index.toString()),
                           child: Text(shoppingListBloc
                               .getProduct(index)
-                              .descricao),
+                              .description),
                           onDismissed: (direction) {
                             shoppingListBloc.removeProduct(index);
                           },

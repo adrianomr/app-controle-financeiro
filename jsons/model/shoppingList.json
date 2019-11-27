@@ -1,0 +1,11 @@
+{
+  "id": 9,
+  "sysUser": {
+    "id": 7,
+    "username": "adriano",
+    "password": "123456"
+  },
+  "description": "Market List",
+  "value": 0,
+  "shoppingListItems": "$[]ShoppingListItem"
+}
