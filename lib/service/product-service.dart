@@ -4,10 +4,9 @@ import 'dart:io';
 import 'package:controle_financeiro/models/model/product.dart';
 import 'package:http/http.dart' as http;
 
-Future<String> getShoppingList() async {
+Future<String> getProducts() async {
   final response = await http
       .get('https://ar-controle-financeiro.herokuapp.com/product');
-  print('shopping itens:' + response.body);
   return response.body;
 }
 

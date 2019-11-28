@@ -18,18 +18,25 @@ class ShoppingListBloc extends ChangeNotifier {
 //        descomentar quando ajsutar o backend
 //        _shoppingList.fromJson(json.decode(jsonData));
 //      if (_shoppingList.calls == 0) {
-      jsonData = jsonData.replaceAll("content", "product.json");
+//      jsonData = jsonData.replaceAll("content", "product.json");
         print('data' + jsonData);
-      _shoppingList = ShoppingList.fromJson(json.decode(jsonData));
+        _shoppingList =
+            ShoppingList.fromJson(json.decode(jsonData)['content'][0]);
+        print('obj from json' + _shoppingList.toJson().toString());
 //      }
       this.notifyListeners();
     });
   }
 
+  List<ShoppingListItem> getItens() {
+    if (shoppingList.shoppingListItems == null)
+      shoppingList.shoppingListItems = List();
+    return shoppingList.shoppingListItems;
+  }
   addProduct() {
     ShoppingListItem item = new ShoppingListItem();
     item.product = _editableProductBloc.product;
-    shoppingList.shoppingListItems.add(item);
+    getItens().add(item);
     _editableProductBloc.addProduct();
     print("shopping list -> " + _shoppingList.toJson().toString());
     notifyListeners();
@@ -42,15 +49,15 @@ class ShoppingListBloc extends ChangeNotifier {
   ShoppingList get shoppingList => _shoppingList;
 
   int getCountItens() {
-    return shoppingList.shoppingListItems.length;
+    return getItens().length;
   }
 
   Product getProduct(int index) {
-    return shoppingList.shoppingListItems[index].product;
+    return getItens()[index].product;
   }
 
   void removeProduct(int index) {
-    shoppingList.shoppingListItems.removeAt(index);
+    getItens().removeAt(index);
     notifyListeners();
   }
 
