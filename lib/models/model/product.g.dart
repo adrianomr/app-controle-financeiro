@@ -10,7 +10,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
   return Product()
     ..id = json['id'] as num
     ..description = json['description'] as String
-    ..value = json['value'] as String;
+    ..value = json['value'] as double;
 }
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{

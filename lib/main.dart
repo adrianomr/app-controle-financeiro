@@ -1,3 +1,4 @@
+import 'package:controle_financeiro/blocprov/product-blocprov.dart';
 import 'package:controle_financeiro/blocprov/shoping-list-blocprov.dart';
 import 'package:controle_financeiro/theme/style.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShoppingListBlocprov(
-        child: MaterialApp(
-            title: 'Flutter Demo',
-            theme: Style(),
-            home: MyHomePage(title: 'Flutter Demo Home Page'),
-            routes: <String, WidgetBuilder>{
-              "/screen2": (BuildContext context) => Screen2(),
-            }
-        )
-    );
+        child: ProductBlocProv(
+            child: MaterialApp(
+                title: 'Flutter Demo',
+                theme: Style(),
+                home: MyHomePage(title: 'Flutter Demo Home Page'),
+                routes: <String, WidgetBuilder>{
+                  "/screen2": (BuildContext context) => Screen2(),
+                })));
   }
 }
 
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.arrow_forward),
-            onPressed: (){
+            onPressed: () {
               Navigator.pushNamed(context, '/screen2');
             },
           )

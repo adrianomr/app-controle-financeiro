@@ -1,12 +1,28 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:controle_financeiro/bloc/product-bloc.dart';
 import 'package:controle_financeiro/bloc/shopping-list-bloc.dart';
+import 'package:controle_financeiro/models/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Screen2 extends StatelessWidget {
+  Widget row(Product product) {
+    print('aqui' + product.toJson().toString());
+    return Row(
+      children: <Widget>[
+        Text(
+          product.description,
+          style: TextStyle(fontSize: 20),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ShoppingListBloc shoppingListBloc =
     Provider.of<ShoppingListBloc>(context);
+    final ProductBloc productBloc = Provider.of<ProductBloc>(context);
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -21,17 +37,26 @@ class Screen2 extends StatelessWidget {
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
               Widget>[
-            TextField(
+            AutoCompleteTextField<Product>(
+              suggestions: productBloc.getProducts(),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Add new item',
               ),
-              onChanged: (item) {
+              textChanged: (item) {
                 shoppingListBloc.editableProductChange(item);
               },
-              controller: TextEditingController(text: shoppingListBloc
-                  .getEditableProduct()
-                  .description),
+              controller: TextEditingController(
+                  text: shoppingListBloc
+                      .getEditableProduct()
+                      .description),
+              itemBuilder: (context, item) {
+                return row(item);
+              },
+              itemFilter: (item, query) =>
+                  item.description.toLowerCase().startsWith(query),
+              itemSubmitted: (product) =>
+                  shoppingListBloc.editableProductChange(product.description),
             ),
             Expanded(
                 child: SizedBox(

@@ -15,15 +15,10 @@ class ShoppingListBloc extends ChangeNotifier {
     _editableProductBloc = new ProductBloc();
     _shoppingList = ShoppingList();
     getShoppingList().then((String jsonData) {
-//        descomentar quando ajsutar o backend
-//        _shoppingList.fromJson(json.decode(jsonData));
-//      if (_shoppingList.calls == 0) {
-//      jsonData = jsonData.replaceAll("content", "product.json");
         print('data' + jsonData);
         _shoppingList =
             ShoppingList.fromJson(json.decode(jsonData)['content'][0]);
         print('obj from json' + _shoppingList.toJson().toString());
-//      }
       this.notifyListeners();
     });
   }

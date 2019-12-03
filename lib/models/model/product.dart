@@ -8,7 +8,7 @@ class Product {
 
   num id;
   String description;
-  String value;
+  double value;
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);

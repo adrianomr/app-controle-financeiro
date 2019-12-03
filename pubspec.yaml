@@ -20,6 +20,7 @@ dependencies:
   http: ^0.12.0+2
   provider:
   json_annotation:
+  autocomplete_textfield: ^1.6.4
   flutter:
     sdk: flutter
 
