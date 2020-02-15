@@ -9,7 +9,6 @@ class ProductBlocProv extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ProductBloc>.value(value: ProductBloc())

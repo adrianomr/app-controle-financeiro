@@ -5,7 +5,7 @@ import 'package:controle_financeiro/models/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Screen2 extends StatelessWidget {
+class ShoppingListWidget extends StatelessWidget {
   Widget row(Product product) {
     print('aqui' + product.toJson().toString());
     return Row(
@@ -23,7 +23,6 @@ class Screen2 extends StatelessWidget {
     final ShoppingListBloc shoppingListBloc =
     Provider.of<ShoppingListBloc>(context);
     final ProductBloc productBloc = Provider.of<ProductBloc>(context);
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text('Market List'),
