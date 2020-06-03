@@ -12,17 +12,19 @@ class AutoCompleteInputWidget extends StatefulWidget {
 }
 
 class _AutoCompleteInputWidgetState extends State<AutoCompleteInputWidget> {
-  String selecionado = '';
+  String selecionado;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    selecionado = '';
-    super.initState();
+  setTexto(texto) {
+    setState(() {
+      print(texto);
+      selecionado = texto;
+    });
+    return texto;
   }
 
   @override
   Widget build(BuildContext context) {
+    print(selecionado);
     return Container(
         padding: EdgeInsets.all(10),
         child: AutoCompleteTextField(
@@ -39,13 +41,8 @@ class _AutoCompleteInputWidgetState extends State<AutoCompleteInputWidget> {
           itemFilter: (suggestion, input) =>
               suggestion.toLowerCase().startsWith(input.toLowerCase()),
           clearOnSubmit: false,
-          itemSubmitted: (texto) {
-            setState(() {
-              print(texto);
-              selecionado = texto;
-            });
-            return texto;
-          },
+          itemSubmitted: setTexto,
+          textSubmitted: setTexto,
         ));
   }
 }
