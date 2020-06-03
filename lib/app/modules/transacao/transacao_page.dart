@@ -21,9 +21,16 @@ class _TransacaoPageState extends State<TransacaoPage> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<FormState>();
 
+//  Map<String, bool> map;
+//  @override
+//  void initState() {
+//    map = {'Compra': true, 'Venda': false};
+//    super.initState();
+//  }
+
   @override
   Widget build(BuildContext context) {
-    TransacaoBloc _acaoBloc = TransacaoModule.to.getBloc<TransacaoBloc>();
+    TransacaoBloc _transacaoBloc = TransacaoModule.to.getBloc<TransacaoBloc>();
     List<String> suggestions = [
       "BCFF11",
       "ITSA4",
@@ -43,15 +50,17 @@ class _TransacaoPageState extends State<TransacaoPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  DateInputWidget(),
-                  AutoCompleteInputWidget(suggestions),
-                  ButtonGroupnInputWidget(),
+                  DateInputWidget('Data'),
+                  ButtonGroupnInputWidget(
+                    {'Compra': true, 'Venda': false},
+                    (selected) {
+                      print(selected);
+                    },
+                  ),
+                  AutoCompleteInputWidget(suggestions, 'Papel'),
                   NumberInputWidget("Quantidade"),
                   CurrencyInputWidget("Preço"),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: SubmitWidget(() => print('submit')),
-                  ),
+                  SubmitWidget(() => print('submit')),
                 ],
               ),
             ])));
