@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class AutoCompleteInputWidget extends StatefulWidget {
   List _suggestions;
   String _label;
+  Function callback;
 
-  AutoCompleteInputWidget(this._suggestions, this._label);
+  AutoCompleteInputWidget(this._suggestions, this._label, {this.callback});
 
   @override
   State<StatefulWidget> createState() => _AutoCompleteInputWidgetState();
@@ -18,6 +19,7 @@ class _AutoCompleteInputWidgetState extends State<AutoCompleteInputWidget> {
     setState(() {
       print(texto);
       selecionado = texto;
+      if (widget.callback != null) widget.callback(texto);
     });
     return texto;
   }

@@ -18,7 +18,6 @@ class CurrencyInputWidget extends StatelessWidget {
           inputFormatters: <TextInputFormatter>[
             WhitelistingTextInputFormatter.digitsOnly,
           ],
-          //// Only numbers can be
           controller: MoneyMaskedTextController(
               decimalSeparator: '.',
               thousandSeparator: ',',
