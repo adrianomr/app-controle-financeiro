@@ -1,0 +1,4 @@
+lib/app/components/charts/pie_chart/pie_chart_widget.dart
+test/app/components/charts/pie_chart/pie_chart_widget_test.dart
+lib/app/components/charts/pie_chart/pie_chart_bloc.dart
+test/app/components/charts/pie_chart/pie_chart_bloc_test.dart
