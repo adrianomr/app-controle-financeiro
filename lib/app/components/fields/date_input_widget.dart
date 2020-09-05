@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class DateInputWidget extends StatelessWidget {
   String _label;
-
-  DateInputWidget(this._label);
+  Function callback;
+  DateInputWidget(this._label, {this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class DateInputWidget extends StatelessWidget {
         child: DateField(
           initialDatePickerMode: DatePickerMode.day,
           label: _label,
-          onDateSelected: (date) => print(date),
+          onDateSelected: (date) => callback(date),
           selectedDate: DateTime.now(),
           decoration: InputDecoration(
               labelText: _label,

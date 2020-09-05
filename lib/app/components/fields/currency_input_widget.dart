@@ -4,8 +4,8 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class CurrencyInputWidget extends StatelessWidget {
   String _label;
-
-  CurrencyInputWidget(this._label);
+  Function callback;
+  CurrencyInputWidget(this._label, {this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class CurrencyInputWidget extends StatelessWidget {
               decimalSeparator: '.',
               thousandSeparator: ',',
               leftSymbol: 'R\$ '),
+          onChanged: (value) => callback(double.parse(value)/100),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter some text';

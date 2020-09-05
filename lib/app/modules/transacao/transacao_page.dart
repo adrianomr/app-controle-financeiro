@@ -5,7 +5,7 @@ import 'package:controle_financeiro/app/components/fields/currency_input_widget.
 import 'package:controle_financeiro/app/components/fields/date_input_widget.dart';
 import 'package:controle_financeiro/app/components/fields/number_input_widget.dart';
 import 'package:controle_financeiro/app/modules/transacao//transacao_module.dart';
-import 'package:controle_financeiro/app/modules/transacao/transacao_bloc.dart';
+import 'package:controle_financeiro/app/modules/transacao/transacao_page_bloc.dart';
 import 'package:flutter/material.dart';
 
 class TransacaoPage extends StatefulWidget {
@@ -30,7 +30,8 @@ class _TransacaoPageState extends State<TransacaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    TransacaoBloc _transacaoBloc = TransacaoModule.to.getBloc<TransacaoBloc>();
+    TransacaoPageBloc _transacaoBloc =
+        TransacaoModule.to.getBloc<TransacaoPageBloc>();
     List<String> suggestions = [
 //      "BCFF11",
 //      "ITSA4",
@@ -50,23 +51,31 @@ class _TransacaoPageState extends State<TransacaoPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  DateInputWidget('Data'),
+                  DateInputWidget(
+                    'Data',
+                    callback: _transacaoBloc.changeData,
+                  ),
                   ButtonGroupnInputWidget(
                     {'Compra': true, 'Venda': false},
-                    (selected) {
-                      print(selected);
-                    },
+                    _transacaoBloc.changeTipoTransacao,
                   ),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: AutoCompleteInputWidget(
                       'Papel',
                       filter: _transacaoBloc.findAcao,
+                      callback: _transacaoBloc.changePapel,
                     ),
                   ),
-                  NumberInputWidget("Quantidade"),
-                  CurrencyInputWidget("Preço"),
-                  SubmitWidget(() => print('submit')),
+                  NumberInputWidget(
+                    "Quantidade",
+                    callback: _transacaoBloc.changeQuantidade,
+                  ),
+                  CurrencyInputWidget(
+                    "Preço",
+                    callback: _transacaoBloc.changeValor,
+                  ),
+                  SubmitWidget(_transacaoBloc.submit),
                 ],
               ),
             ])));

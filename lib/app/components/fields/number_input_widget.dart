@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 
 class NumberInputWidget extends StatelessWidget {
   String _label;
+  Function callback;
 
-  NumberInputWidget(this._label);
+  NumberInputWidget(this._label, {this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class NumberInputWidget extends StatelessWidget {
           inputFormatters: <TextInputFormatter>[
             WhitelistingTextInputFormatter.digitsOnly,
           ], //// Only numbers can be
+          onChanged: (text) => callback(int.parse(text)),
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter some text';
