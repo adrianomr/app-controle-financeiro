@@ -31,6 +31,9 @@ class AutoCompleteInputWidget extends StatelessWidget {
           title: Text(suggestion),
         );
       },
+      errorBuilder: (buildContext, object) => ListTile(
+        title: Text("Nenhuma ação encontrada"),
+      ),
       onSuggestionSelected: (suggestion) {
         this._typeAheadController.text = suggestion;
         if (callback != null) callback(suggestion);
