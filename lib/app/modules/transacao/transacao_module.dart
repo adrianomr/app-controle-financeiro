@@ -1,3 +1,4 @@
+import 'package:controle_financeiro/app/bloc/acao_bloc.dart';
 import 'package:controle_financeiro/app/modules/transacao/transacao_bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:controle_financeiro/app/modules/transacao/transacao_page.dart';
@@ -7,6 +8,7 @@ class TransacaoModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
         Bloc((i) => TransacaoBloc()),
+        Bloc((i) => AcaoBloc()),
       ];
 
   @override

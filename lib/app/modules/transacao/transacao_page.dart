@@ -32,12 +32,12 @@ class _TransacaoPageState extends State<TransacaoPage> {
   Widget build(BuildContext context) {
     TransacaoBloc _transacaoBloc = TransacaoModule.to.getBloc<TransacaoBloc>();
     List<String> suggestions = [
-      "BCFF11",
-      "ITSA4",
-      "B3SA3",
-      "ITUB3",
-      "WIZS3",
-      "XPLG11",
+//      "BCFF11",
+//      "ITSA4",
+//      "B3SA3",
+//      "ITUB3",
+//      "WIZS3",
+//      "XPLG11",
     ];
     return Scaffold(
         key: _scaffoldKey,
@@ -57,7 +57,13 @@ class _TransacaoPageState extends State<TransacaoPage> {
                       print(selected);
                     },
                   ),
-                  AutoCompleteInputWidget(suggestions, 'Papel'),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: AutoCompleteInputWidget(
+                      'Papel',
+                      filter: _transacaoBloc.findAcao,
+                    ),
+                  ),
                   NumberInputWidget("Quantidade"),
                   CurrencyInputWidget("Preço"),
                   SubmitWidget(() => print('submit')),
