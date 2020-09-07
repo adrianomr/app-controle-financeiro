@@ -45,6 +45,7 @@ class PieChartWidget extends StatelessWidget {
       )
     ];
   }
+
   // EXCLUDE_FROM_GALLERY_DOCS_END
 
   @override
@@ -53,7 +54,13 @@ class PieChartWidget extends StatelessWidget {
         animate: animate,
         // Configure the width of the pie slices to 60px. The remaining space in
         // the chart will be left as a hole in the center.
-        defaultRenderer: new charts.ArcRendererConfig(arcWidth: 60));
+//        defaultRenderer: new charts.ArcRendererConfig(arcWidth: 60));
+        defaultRenderer: new charts.ArcRendererConfig(
+            arcWidth: 60,
+            arcRendererDecorators: [
+              new charts.ArcLabelDecorator(
+                  labelPosition: charts.ArcLabelPosition.outside)
+            ]));
   }
 
   /// Create one series with sample hard coded data.

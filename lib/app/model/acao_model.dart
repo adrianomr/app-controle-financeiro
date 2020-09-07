@@ -6,15 +6,17 @@ class Acao {
   String nomeEmpresa;
   int quantidade;
   double valor;
+  double precoMedio;
 
   Acao(
       {this.id,
-        this.papel,
-        this.codigoBdi,
-        this.tipoMercado,
-        this.nomeEmpresa,
-        this.quantidade,
-        this.valor});
+      this.papel,
+      this.codigoBdi,
+      this.tipoMercado,
+      this.nomeEmpresa,
+      this.quantidade,
+      this.valor,
+      this.precoMedio});
 
   Acao.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,6 +26,7 @@ class Acao {
     nomeEmpresa = json['nomeEmpresa'];
     quantidade = json['quantidade'];
     valor = json['valor'];
+    precoMedio = json['precoMedio'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class Acao {
     data['nomeEmpresa'] = this.nomeEmpresa;
     data['quantidade'] = this.quantidade;
     data['valor'] = this.valor;
+    data['precoMedio'] = this.precoMedio;
     return data;
   }
 }
