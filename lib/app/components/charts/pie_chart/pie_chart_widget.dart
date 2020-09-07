@@ -51,15 +51,16 @@ class PieChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new charts.PieChart(seriesList,
+        layoutConfig: charts.LayoutConfig(
+            leftMarginSpec: charts.MarginSpec.fixedPixel(50),
+            topMarginSpec: charts.MarginSpec.fixedPixel(20),
+            rightMarginSpec: charts.MarginSpec.fixedPixel(20),
+            bottomMarginSpec: charts.MarginSpec.fixedPixel(20)),
         animate: animate,
-        // Configure the width of the pie slices to 60px. The remaining space in
-        // the chart will be left as a hole in the center.
-//        defaultRenderer: new charts.ArcRendererConfig(arcWidth: 60));
         defaultRenderer: new charts.ArcRendererConfig(
-            arcWidth: 60,
+            arcWidth: 100,
             arcRendererDecorators: [
-              new charts.ArcLabelDecorator(
-                  labelPosition: charts.ArcLabelPosition.outside)
+              new charts.ArcLabelDecorator()
             ]));
   }
 

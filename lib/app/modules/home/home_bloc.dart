@@ -4,17 +4,19 @@ import 'package:controle_financeiro/app/bloc/carteira_bloc.dart';
 import 'package:controle_financeiro/app/model/acao_model.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/modules/home/home_module.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeBloc extends BlocBase {
   BehaviorSubject<Carteira> carteiraBehaviorSubject = BehaviorSubject();
   CarteiraBloc carteiraBloc = HomeModule.to.getBloc<CarteiraBloc>();
+
   buscaCarteira() async {
     Carteira carteira = await carteiraBloc.getCarteira();
     carteiraBehaviorSubject.add(carteira);
   }
 
-  List<Series> generateSeriesFromCarteira(Carteira carteira){
+  List<Series> generateSeriesFromCarteira(Carteira carteira) {
     return [
       new Series<Acao, String>(
         id: 'Carteira',
@@ -22,7 +24,8 @@ class HomeBloc extends BlocBase {
         measureFn: (Acao acao, _) => acao.valor * acao.quantidade,
         data: carteira.acoes,
         // Set a label accessor to control the text of the arc label.
-        labelAccessorFn: (Acao acao, _) => '${acao.papel}',
+        labelAccessorFn: (Acao acao, _) =>
+            '${acao.papel} (${NumberFormat.percentPattern().format((acao.valor * acao.quantidade) / carteira.valorAtual)})',
       )
     ];
   }

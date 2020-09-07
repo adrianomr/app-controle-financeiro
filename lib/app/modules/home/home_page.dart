@@ -43,18 +43,56 @@ class _HomePageState extends State<HomePage> {
         body: Container(
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                          child: Text("Valor Investido"),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text("Valor Atual"),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text("Lucro"),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text("Lucro (%)"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      getValorInvestido(),
+                      getValorAtual(),
+                      getLucroPrejuizo(),
+                      getLucroPrejuizoPercentual()
+                    ],
+                  ),
+                ],
+              ),
               Row(
                 children: <Widget>[
                   Expanded(
                     child: Container(
                       child: Center(
-                        child: Text("Dashboard"),
+                        child: Text("Carteira"),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.list),
-                    tooltip: 'Increase volume by 10',
+                    icon: Icon(chartView ? Icons.list : Icons.donut_large),
                     onPressed: () {
                       setState(() {
                         chartView = !chartView;
@@ -104,6 +142,90 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
+  Widget getLucroPrejuizo() {
+    return StreamBuilder(
+        stream: _homeBloc.carteiraBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          Carteira carteira = snapshot.data;
+          if(carteira == null)
+            return Container();
+          return getBadget(
+              Text(
+                "R\$ " +
+                    NumberFormat.currency(locale: "pt_BR", symbol: "")
+                        .format(carteira.lucroPrejuizo),
+                style: TextStyle(color: Colors.white),
+              ),
+              context);
+        });
+  }
+
+  Widget getValorInvestido() {
+    return StreamBuilder(
+        stream: _homeBloc.carteiraBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          Carteira carteira = snapshot.data;
+          if(carteira == null)
+            return Container();
+          return getBadget(
+              Text(
+                "R\$ " +
+                    NumberFormat.currency(locale: "pt_BR", symbol: "")
+                        .format(carteira.valorInvestido),
+                style: TextStyle(color: Colors.white),
+              ),
+              context);
+        });
+  }
+
+  Widget getValorAtual() {
+    return StreamBuilder(
+        stream: _homeBloc.carteiraBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          Carteira carteira = snapshot.data;
+          if(carteira == null)
+            return Container();
+          return getBadget(
+              Text(
+                "R\$ " +
+                    NumberFormat.currency(locale: "pt_BR", symbol: "")
+                        .format(carteira.valorAtual),
+                style: TextStyle(color: Colors.white),
+              ),
+              context);
+        });
+  }
+
+  Widget getLucroPrejuizoPercentual() {
+    return StreamBuilder(
+        stream: _homeBloc.carteiraBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          Carteira carteira = snapshot.data;
+          if(carteira == null)
+            return Container();
+          return getBadget(
+              Text(
+                NumberFormat.percentPattern()
+                    .format(carteira.lucroPrejuizo / carteira.valorInvestido),
+                style: TextStyle(color: Colors.white),
+              ),
+              context);
+        });
+  }
+
+  getBadget(Widget children, BuildContext buildContext) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        child: Container(
+          color: Theme.of(context).primaryColor,
+          height: 50,
+          child: Center(child: children),
+        ),
+      ),
+    );
+  }
+
   Widget getPanel() {
     return StreamBuilder(
       stream: _homeBloc.carteiraBehaviorSubject.stream,
@@ -111,7 +233,10 @@ class _HomePageState extends State<HomePage> {
         Carteira carteira = snapshot.data;
         if (carteira == null) return Container();
         if (chartView)
-          return PieChartWidget(_homeBloc.generateSeriesFromCarteira(carteira));
+          return Container(
+            child:
+                PieChartWidget(_homeBloc.generateSeriesFromCarteira(carteira)),
+          );
         return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child:
