@@ -51,11 +51,6 @@ class PieChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new charts.PieChart(seriesList,
-        layoutConfig: charts.LayoutConfig(
-            leftMarginSpec: charts.MarginSpec.fixedPixel(50),
-            topMarginSpec: charts.MarginSpec.fixedPixel(20),
-            rightMarginSpec: charts.MarginSpec.fixedPixel(20),
-            bottomMarginSpec: charts.MarginSpec.fixedPixel(20)),
         animate: animate,
         defaultRenderer: new charts.ArcRendererConfig(
             arcWidth: 100,
