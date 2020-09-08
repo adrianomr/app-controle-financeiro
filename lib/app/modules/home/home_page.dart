@@ -1,4 +1,5 @@
 import 'package:controle_financeiro/app/components/charts/pie_chart/pie_chart_widget.dart';
+import 'package:controle_financeiro/app/components/slider/full_screen_slider_component.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/modules/home/components/info_gerais_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/side_bar_widget.dart';
@@ -39,6 +40,25 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.only(top: 10),
               ),
               getInfoGerais(),
+              Expanded(
+                child: FullScreenSliderComponent(
+                    <Widget>[getPanel(), getRebalanceamentoPanel()]),
+              ),
+            ],
+          ),
+        ),
+        drawer: SideBarWidget());
+  }
+
+  Widget getPanel() {
+    return StreamBuilder(
+      stream: _homeBloc.carteiraBehaviorSubject.stream,
+      builder: (context, snapshot) {
+        Carteira carteira = snapshot.data;
+        if (carteira == null) return Container();
+        if (chartView)
+          return Column(
+            children: <Widget>[
               Row(
                 children: <Widget>[
                   Expanded(
@@ -59,24 +79,12 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Expanded(
-                child: getPanel(),
-              ),
+                child: Container(
+                  child: PieChartWidget(
+                      _homeBloc.generateSeriesFromCarteira(carteira)),
+                ),
+              )
             ],
-          ),
-        ),
-        drawer: SideBarWidget());
-  }
-
-  Widget getPanel() {
-    return StreamBuilder(
-      stream: _homeBloc.carteiraBehaviorSubject.stream,
-      builder: (context, snapshot) {
-        Carteira carteira = snapshot.data;
-        if (carteira == null) return Container();
-        if (chartView)
-          return Container(
-            child:
-                PieChartWidget(_homeBloc.generateSeriesFromCarteira(carteira)),
           );
         return TabelaAcoesWidget(carteira);
       },
@@ -91,5 +99,11 @@ class _HomePageState extends State<HomePage> {
           if (carteira == null) return Container();
           return InfoGeraisWidget(carteira);
         });
+  }
+
+  getRebalanceamentoPanel() {
+    return Container(
+      child: PieChartWidget.withRandomData(),
+    );
   }
 }

@@ -16,6 +16,7 @@ dependencies:
   flutter_masked_text: ^0.7.0
   flutter_typeahead: ^1.8.8
   intl: ^0.16.1
+  carousel_slider: ^2.2.1
   flutter:
     sdk: flutter
 
