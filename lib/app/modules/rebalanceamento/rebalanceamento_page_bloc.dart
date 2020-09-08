@@ -4,16 +4,25 @@ import 'package:controle_financeiro/app/bloc/rebalanceamento_bloc.dart';
 import 'package:controle_financeiro/app/model/acao_model.dart';
 import 'package:controle_financeiro/app/model/rebalanceamento_model.dart';
 import 'package:controle_financeiro/app/modules/rebalanceamento/rebalanceamento_module.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RebalanceamentoPageBloc extends BlocBase {
   AcaoBloc acaoBloc = RebalanceamentoModule.to.getBloc<AcaoBloc>();
   RebalanceamentoBloc rebalanceamentoBloc =
       RebalanceamentoModule.to.getBloc<RebalanceamentoBloc>();
   Rebalanceamento rebalanceamento = Rebalanceamento(acao: Acao());
+  BehaviorSubject<List<Rebalanceamento>> rebalanceamentoListBehaviorSubject =
+      BehaviorSubject();
 
   @override
   void dispose() {
+    rebalanceamentoListBehaviorSubject.close();
     super.dispose();
+  }
+
+  getRebalanceamentoList() async {
+    rebalanceamentoListBehaviorSubject
+        .add(await rebalanceamentoBloc.getListRebalanceamento());
   }
 
   findAcao(String texto) async {
@@ -31,8 +40,9 @@ class RebalanceamentoPageBloc extends BlocBase {
 
   submit() async {
     List<Acao> acoes =
-        await acaoBloc.findAcaoByPapelContaining(rebalanceamento.acao.papel);
+    await acaoBloc.findAcaoByPapelContaining(rebalanceamento.acao.papel);
     rebalanceamento.acao = acoes[0];
-    rebalanceamentoBloc.criaRebalanceamento(rebalanceamento);
+    await rebalanceamentoBloc.criaRebalanceamento(rebalanceamento);
+    await getRebalanceamentoList();
   }
 }
