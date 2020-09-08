@@ -2,6 +2,7 @@ import 'package:controle_financeiro/app/components/charts/pie_chart/pie_chart_wi
 import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/modules/home/home_bloc.dart';
 import 'package:controle_financeiro/app/modules/home/home_module.dart';
+import 'package:controle_financeiro/app/modules/rebalanceamento/rebalanceamento_module.dart';
 import 'package:controle_financeiro/app/modules/transacao/transacao_module.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -129,12 +130,22 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListTile(
+                title: Text('Rebalanceamento'),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => RebalanceamentoModule()));
+                },
+              ),
+              ListTile(
                 title: Text('Proventos'),
                 onTap: () {
                   // Update the state of the app
                   // ...
                   // Then close the drawer
-                  Navigator.pop(context);
+//                  Navigator.pop(context);
                 },
               ),
             ],
@@ -147,8 +158,7 @@ class _HomePageState extends State<HomePage> {
         stream: _homeBloc.carteiraBehaviorSubject.stream,
         builder: (context, snapshot) {
           Carteira carteira = snapshot.data;
-          if(carteira == null)
-            return Container();
+          if (carteira == null) return Container();
           return getBadget(
               Text(
                 "R\$ " +
@@ -165,8 +175,7 @@ class _HomePageState extends State<HomePage> {
         stream: _homeBloc.carteiraBehaviorSubject.stream,
         builder: (context, snapshot) {
           Carteira carteira = snapshot.data;
-          if(carteira == null)
-            return Container();
+          if (carteira == null) return Container();
           return getBadget(
               Text(
                 "R\$ " +
@@ -183,8 +192,7 @@ class _HomePageState extends State<HomePage> {
         stream: _homeBloc.carteiraBehaviorSubject.stream,
         builder: (context, snapshot) {
           Carteira carteira = snapshot.data;
-          if(carteira == null)
-            return Container();
+          if (carteira == null) return Container();
           return getBadget(
               Text(
                 "R\$ " +
@@ -201,8 +209,7 @@ class _HomePageState extends State<HomePage> {
         stream: _homeBloc.carteiraBehaviorSubject.stream,
         builder: (context, snapshot) {
           Carteira carteira = snapshot.data;
-          if(carteira == null)
-            return Container();
+          if (carteira == null) return Container();
           return getBadget(
               Text(
                 NumberFormat.percentPattern()
