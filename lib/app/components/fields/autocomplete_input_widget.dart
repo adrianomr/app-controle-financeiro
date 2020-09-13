@@ -1,4 +1,3 @@
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -17,7 +16,7 @@ class AutoCompleteInputWidget extends StatelessWidget {
     return TypeAheadField(
       textFieldConfiguration: TextFieldConfiguration(
           controller: _typeAheadController,
-          autofocus: true,
+          autofocus: false,
           style: DefaultTextStyle.of(context)
               .style
               .copyWith(fontStyle: FontStyle.italic),
