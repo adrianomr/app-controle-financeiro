@@ -2,6 +2,7 @@ import 'package:controle_financeiro/app/components/charts/pie_chart/pie_chart_wi
 import 'package:controle_financeiro/app/components/slider/full_screen_slider_component.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/modules/home/components/info_gerais_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/rebalanceamento_panel_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/side_bar_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/tabela_acoes_widget.dart';
 import 'package:controle_financeiro/app/modules/home/home_bloc.dart';
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _homeBloc.buscaCarteira();
+    _homeBloc.buscaCarteiraRebalanceamento();
     super.initState();
   }
 
@@ -102,8 +104,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   getRebalanceamentoPanel() {
-    return Container(
-      child: PieChartWidget.withRandomData(),
-    );
+    return StreamBuilder(
+        stream: _homeBloc.carteiraRebalanceamentoBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          Carteira carteira = snapshot.data;
+          if (carteira == null) return Container();
+          return RebalanceamentoPanelWidget(
+              _homeBloc.generateRebalanceamentoSeriesFromCarteira(carteira));
+        });
   }
 }

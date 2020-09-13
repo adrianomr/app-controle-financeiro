@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/model/rebalanceamento_model.dart';
 import 'package:controle_financeiro/app/model/usuario_model.dart';
 import 'package:controle_financeiro/app/service/rebalanceamento_service.dart';
@@ -16,6 +17,12 @@ class RebalanceamentoBloc extends BlocBase {
       });
     }
     return rebalanceamentoList;
+  }
+
+  Future<Carteira> getCarteiraRebalanceamento() async {
+    Response response =
+        await rebalanceamentoService.getCarteiraRebalanceamento();
+    return Carteira.fromJson(response.data);
   }
 
   Rebalanceamento addUsuario(Rebalanceamento rebalanceamento) {

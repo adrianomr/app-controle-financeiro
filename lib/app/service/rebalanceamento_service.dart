@@ -10,6 +10,10 @@ class RebalanceamentoService {
     return await dio.get('$path/rebalanceamento?usuario=1');
   }
 
+  Future<Response> getCarteiraRebalanceamento() async {
+    return await dio.get('$path/rebalanceamento/carteira?usuario=1');
+  }
+
   Future<Response> create(Rebalanceamento rebalanceamento) async {
     return await dio.post('$path/rebalanceamento', data: rebalanceamento);
   }
