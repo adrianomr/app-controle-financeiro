@@ -68,12 +68,7 @@ class _RebalanceamentoPageState extends State<RebalanceamentoPage> {
                   if (rebalanceamentoList == null) return Container();
                   return Column(
                     children: rebalanceamentoList
-                        .map((rebalanceamento) => ListTile(
-                              title: Text(rebalanceamento.acao.papel),
-                              trailing: Text(NumberFormat.decimalPercentPattern(
-                                      decimalDigits: 2)
-                                  .format(rebalanceamento.percentual / 100)),
-                            ))
+                        .map((rebalanceamento) => getRow(rebalanceamento))
                         .toList(),
                   );
                 },
@@ -81,5 +76,28 @@ class _RebalanceamentoPageState extends State<RebalanceamentoPage> {
             ],
           ),
         ));
+  }
+
+  Widget getRow(Rebalanceamento rebalanceamento) {
+    return Dismissible(
+      // Show a red background as the item is swiped away.
+      background: Container(
+        padding: EdgeInsets.only(right: 30),
+        alignment: Alignment.centerRight,
+        child: Icon(
+          Icons.delete,
+          color: Colors.black38,
+        ),
+      ),
+      key: Key(rebalanceamento.id.toString()),
+      onDismissed: (direction) {
+        _rebalanceamentoBloc.delete(rebalanceamento);
+      },
+      child: ListTile(
+        title: Text(rebalanceamento.acao.papel),
+        trailing: Text(NumberFormat.decimalPercentPattern(decimalDigits: 2)
+            .format(rebalanceamento.percentual / 100)),
+      ),
+    );
   }
 }

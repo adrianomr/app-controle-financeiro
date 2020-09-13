@@ -41,4 +41,8 @@ class RebalanceamentoBloc extends BlocBase {
     Response response = await rebalanceamentoService.alter(rebalanceamento);
     return response.statusCode == 200;
   }
+
+  Future<void> delete(Rebalanceamento rebalanceamento) async {
+    await rebalanceamentoService.delete(rebalanceamento.id);
+  }
 }

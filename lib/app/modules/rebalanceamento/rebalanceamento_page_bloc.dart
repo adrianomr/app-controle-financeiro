@@ -40,9 +40,14 @@ class RebalanceamentoPageBloc extends BlocBase {
 
   submit() async {
     List<Acao> acoes =
-    await acaoBloc.findAcaoByPapelContaining(rebalanceamento.acao.papel);
+        await acaoBloc.findAcaoByPapelContaining(rebalanceamento.acao.papel);
     rebalanceamento.acao = acoes[0];
     await rebalanceamentoBloc.criaRebalanceamento(rebalanceamento);
+    await getRebalanceamentoList();
+  }
+
+  Future<void> delete(Rebalanceamento rebalanceamento) async {
+    await rebalanceamentoBloc.delete(rebalanceamento);
     await getRebalanceamentoList();
   }
 }

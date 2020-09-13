@@ -21,4 +21,8 @@ class RebalanceamentoService {
   Future<Response> alter(Rebalanceamento rebalanceamento) async {
     return await dio.put('$path/rebalanceamento', data: rebalanceamento);
   }
+
+  delete(int id) async {
+    await dio.delete('$path/rebalanceamento/$id');
+  }
 }
