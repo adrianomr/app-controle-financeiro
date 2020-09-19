@@ -6,6 +6,7 @@ class AcaoService {
   String path = ControleAcoesServerConf.URL;
 
   Future<Response> findAcaoByPapel(String papel) async {
-    return await dio.get('$path/acao', queryParameters: {"papel": papel});
+    return await dio
+        .get('$path/acao', queryParameters: {"papel": papel.toUpperCase()});
   }
 }

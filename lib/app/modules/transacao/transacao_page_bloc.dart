@@ -22,7 +22,10 @@ class TransacaoPageBloc extends BlocBase {
   }
 
   Future<void> buscaTransacoes() async {
-    transacaoListBehaviorSubject.add(await transacaoBloc.buscaTransacao());
+    List<Transacao> transacaoList = await transacaoBloc.buscaTransacao();
+    transacaoList.sort(
+        (transacaoA, transacaoB) => transacaoB.data.compareTo(transacaoA.data));
+    transacaoListBehaviorSubject.add(transacaoList);
   }
 
   changeData(DateTime data) {

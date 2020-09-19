@@ -29,7 +29,12 @@ class _FormWidgetState extends State<FormWidget> {
         children: <Widget>[
           DateInputWidget(
             'Data',
-            callback: _transacaoBloc.changeData,
+            _transacaoBloc.transacao.data,
+            callback: (data) {
+              setState(() {
+                _transacaoBloc.changeData(data);
+              });
+            },
           ),
           ButtonGroupnInputWidget(
             {'Compra': true, 'Venda': false},

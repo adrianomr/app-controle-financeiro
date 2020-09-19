@@ -17,6 +17,7 @@ dependencies:
   flutter_typeahead: ^1.8.8
   intl: ^0.16.1
   carousel_slider: ^2.2.1
+  date_format: ^1.0.8
   flutter:
     sdk: flutter
 

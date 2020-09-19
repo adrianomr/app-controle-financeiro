@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:controle_financeiro/app/components/charts/pie_chart/pie_chart_widget.dart';
 import 'package:controle_financeiro/app/components/slider/full_screen_slider_component.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
@@ -24,8 +26,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _homeBloc.buscaCarteira();
-    _homeBloc.buscaCarteiraRebalanceamento();
+    try {
+      _homeBloc.buscaCarteira();
+    } catch (e) {
+      log("não foi possivel buscar a carteira");
+    }
+    try {
+      _homeBloc.buscaCarteiraRebalanceamento();
+    } catch (e) {
+      log("não foi possivel buscar a carteira de rebalanceamento");
+    }
     super.initState();
   }
 
@@ -82,8 +92,10 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                 child: Container(
-                  child: PieChartWidget(
-                      _homeBloc.generateSeriesFromCarteira(carteira)),
+                  child: carteira.valorAtual > 0
+                      ? PieChartWidget(
+                          _homeBloc.generateSeriesFromCarteira(carteira))
+                      : Center(child: Text("Você ainda não possui ações")),
                 ),
               )
             ],
