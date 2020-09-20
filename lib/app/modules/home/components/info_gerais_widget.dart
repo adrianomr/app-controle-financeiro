@@ -9,97 +9,94 @@ class InfoGeraisWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
+    return Container(
+        color: Theme.of(context).primaryColor,
+        child: ExpansionTile(
+          title: Row(
+            children: <Widget>[
+              Expanded(
+                child: Row(children: <Widget>[
+                  Container(
+                    child: Text(
+                      "Adriano",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ]),
+              ),
+            ],
+          ),
+          trailing: Icon(
+            Icons.keyboard_arrow_down,
+            color: Colors.white,
+          ),
           children: <Widget>[
-            Expanded(
-              child: Center(
-                child: Text("Valor Investido"),
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: Text("Valor Atual"),
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: Text("Lucro"),
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: Text("Lucro (%)"),
-              ),
-            ),
+            getRow("Valor Investido", getValorInvestido(context), context),
+            getRow("Valor Atual", getValorAtual(context), context),
+            getRow("Lucro", getLucroPrejuizo(context), context),
+            getRow("Lucro (%)", getLucroPrejuizoPercentual(context), context),
           ],
+        ));
+  }
+
+  Widget getRow(String title, Widget value, BuildContext context) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: Row(children: <Widget>[
+        Expanded(
+          child: Row(children: <Widget>[
+            Container(
+              child: Text(
+                title,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ]),
         ),
-        Row(
-          children: <Widget>[
-            getValorInvestido(context),
-            getValorAtual(context),
-            getLucroPrejuizo(context),
-            getLucroPrejuizoPercentual(context)
-          ],
-        ),
-      ],
+        value
+      ]),
     );
   }
 
   Widget getLucroPrejuizo(BuildContext context) {
-    return getBadget(
-        Text(
-          "R\$ " +
-              NumberFormat.currency(locale: "pt_BR", symbol: "")
-                  .format(carteira.lucroPrejuizo),
-          style: TextStyle(color: Colors.white),
-        ),
-        context);
+    return Text(
+      "R\$ " +
+          NumberFormat.currency(locale: "pt_BR", symbol: "")
+              .format(carteira.lucroPrejuizo),
+      style: TextStyle(color: Colors.white),
+    );
   }
 
   Widget getValorInvestido(BuildContext context) {
-    return getBadget(
-        Text(
-          "R\$ " +
-              NumberFormat.currency(locale: "pt_BR", symbol: "")
-                  .format(carteira.valorInvestido),
-          style: TextStyle(color: Colors.white),
-        ),
-        context);
+    return Text(
+      "R\$ " +
+          NumberFormat.currency(locale: "pt_BR", symbol: "")
+              .format(carteira.valorInvestido),
+      style: TextStyle(color: Colors.white),
+    );
   }
 
   Widget getValorAtual(BuildContext context) {
-    return getBadget(
-        Text(
-          "R\$ " +
-              NumberFormat.currency(locale: "pt_BR", symbol: "")
-                  .format(carteira.valorAtual),
-          style: TextStyle(color: Colors.white),
-        ),
-        context);
+    return Text(
+      "R\$ " +
+          NumberFormat.currency(locale: "pt_BR", symbol: "")
+              .format(carteira.valorAtual),
+      style: TextStyle(color: Colors.white),
+    );
   }
 
   Widget getLucroPrejuizoPercentual(BuildContext context) {
-    return getBadget(
-        Text(
-          NumberFormat.percentPattern()
-              .format(carteira.lucroPrejuizo / carteira.valorInvestido),
-          style: TextStyle(color: Colors.white),
-        ),
-        context);
-  }
-
-  getBadget(Widget children, BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        child: Container(
-          color: Theme.of(context).primaryColor,
-          height: 50,
-          child: Center(child: children),
-        ),
-      ),
+    return Text(
+      NumberFormat.percentPattern()
+          .format(carteira.lucroPrejuizo / carteira.valorInvestido),
+      style: TextStyle(color: Colors.white),
     );
   }
 }

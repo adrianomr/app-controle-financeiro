@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 class HomePage extends StatefulWidget {
   final String title;
 
-  const HomePage({Key key, this.title = "Home"}) : super(key: key);
+  const HomePage({Key key, this.title = "Adriano"}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -43,14 +43,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text("Controle de Ações"),
         ),
         body: Container(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
               getInfoGerais(),
               Expanded(
                 child: FullScreenSliderComponent(
@@ -68,39 +65,38 @@ class _HomePageState extends State<HomePage> {
       builder: (context, snapshot) {
         Carteira carteira = snapshot.data;
         if (carteira == null) return Container();
-        if (chartView)
-          return Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                        child: Text("Carteira"),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(chartView ? Icons.list : Icons.donut_large),
-                    onPressed: () {
-                      setState(() {
-                        chartView = !chartView;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Container(
-                  child: carteira.valorAtual > 0
-                      ? PieChartWidget(
-                          _homeBloc.generateSeriesFromCarteira(carteira))
-                      : Center(child: Text("Você ainda não possui ações")),
+        return Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(),
                 ),
-              )
-            ],
-          );
-        return TabelaAcoesWidget(carteira);
+                IconButton(
+                  icon: Icon(
+                    chartView ? Icons.list : Icons.donut_large,
+                    color: Colors.black54,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      chartView = !chartView;
+                    });
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: Container(
+                child: carteira.valorAtual > 0
+                    ? (chartView
+                        ? PieChartWidget(
+                            _homeBloc.generateSeriesFromCarteira(carteira))
+                        : TabelaAcoesWidget(carteira))
+                    : Center(child: Text("Você ainda não possui ações")),
+              ),
+            )
+          ],
+        );
       },
     );
   }
