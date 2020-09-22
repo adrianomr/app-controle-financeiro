@@ -4,22 +4,28 @@ import 'package:controle_financeiro/app/bloc/transacao_bloc.dart';
 import 'package:controle_financeiro/app/model/acao_model.dart';
 import 'package:controle_financeiro/app/model/transacao_model.dart';
 import 'package:controle_financeiro/app/modules/transacao/transacao_module.dart';
+import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class TransacaoPageBloc extends BlocBase {
-  //dispose will be called automatically by closing its streams
+  final formKey = GlobalKey<FormState>();
+  BehaviorSubject<List<Transacao>> transacaoListBehaviorSubject =
+      BehaviorSubject();
   AcaoBloc acaoBloc = TransacaoModule.to.getBloc<AcaoBloc>();
   TransacaoBloc transacaoBloc = TransacaoModule.to.getBloc<TransacaoBloc>();
   TipoTransacao tipoTransacao = TipoTransacao.COMPRA;
   Transacao transacao = Transacao(idUsuario: 1, data: DateTime.now());
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   findAcao(String texto) async {
     List<Acao> acoes = await acaoBloc.findAcaoByPapelContaining(texto);
     return acoes.map((acao) => acao.papel);
+  }
+
+  Future<void> buscaTransacoes() async {
+    List<Transacao> transacaoList = await transacaoBloc.buscaTransacao();
+    transacaoList.sort(
+        (transacaoA, transacaoB) => transacaoB.data.compareTo(transacaoA.data));
+    transacaoListBehaviorSubject.add(transacaoList);
   }
 
   changeData(DateTime data) {
@@ -46,10 +52,21 @@ class TransacaoPageBloc extends BlocBase {
     });
   }
 
-  submit() {
+  submit() async {
     if (tipoTransacao == TipoTransacao.COMPRA)
-      transacaoBloc.compra(transacao);
+      await transacaoBloc.compra(transacao);
     else
-      transacaoBloc.venda(transacao);
+      await transacaoBloc.venda(transacao);
+    await buscaTransacoes();
+  }
+
+  @override
+  void dispose() {
+    transacaoListBehaviorSubject.close();
+    super.dispose();
+  }
+
+  Future<void> delete(Transacao transacao) async {
+    await transacaoBloc.delete(transacao);
   }
 }

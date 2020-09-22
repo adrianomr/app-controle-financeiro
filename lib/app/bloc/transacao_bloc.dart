@@ -1,7 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:controle_financeiro/app/model/acao_model.dart';
 import 'package:controle_financeiro/app/model/transacao_model.dart';
-import 'package:controle_financeiro/app/service/acao_service.dart';
 import 'package:controle_financeiro/app/service/transacao_service.dart';
 import 'package:dio/dio.dart';
 
@@ -26,6 +24,21 @@ class TransacaoBloc extends BlocBase {
       "VENDA": TipoTransacao.VENDA
     };
     return map[tipo.toUpperCase()];
+  }
+
+  Future<List<Transacao>> buscaTransacao() async {
+    List<Transacao> rebalanceamentoList = [];
+    Response response = await transacaoService.buscaTransacoes();
+    if (response.data != null) {
+      response.data.forEach((rebalanceamento) {
+        rebalanceamentoList.add(Transacao.fromJson(rebalanceamento));
+      });
+    }
+    return rebalanceamentoList;
+  }
+
+  Future<void> delete(Transacao transacao) async {
+    await transacaoService.delete(transacao.id);
   }
 }
 

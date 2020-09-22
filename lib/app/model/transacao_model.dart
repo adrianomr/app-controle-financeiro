@@ -1,4 +1,5 @@
 class Transacao {
+  int id;
   int idUsuario;
   String papel;
   double valor;
@@ -9,6 +10,7 @@ class Transacao {
       {this.idUsuario, this.papel, this.valor, this.data, this.quantidade});
 
   Transacao.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     idUsuario = json['idUsuario'];
     papel = json['papel'];
     valor = json['valor'];
@@ -18,6 +20,7 @@ class Transacao {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['idUsuario'] = this.idUsuario;
     data['papel'] = this.papel;
     data['valor'] = this.valor;
