@@ -13,4 +13,8 @@ class ProventoService {
   Future<Response> save(Provento provento) async {
     return await dio.post(path, data: provento);
   }
+
+  Future<Response> delete(int id) async {
+    return await dio.delete('$path/$id');
+  }
 }

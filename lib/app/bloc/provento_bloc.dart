@@ -20,4 +20,10 @@ class ProventoBloc extends BlocBase {
     print(response.toString());
     return response.statusCode == 200;
   }
+
+  Future<bool> delete(Provento provento) async {
+    Response response = await proventoService.delete(provento.id);
+    print(response.toString());
+    return response.statusCode == 200;
+  }
 }

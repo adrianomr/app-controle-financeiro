@@ -31,7 +31,10 @@ class ProventoPageBloc extends BlocBase {
 
   submit() {}
 
-  delete(Provento provento) {}
+  delete(Provento provento) async {
+    await proventoBloc.delete(provento);
+    buscaProventos();
+  }
 
   findAcao(String texto) async {
     List<Acao> acoes = await acaoBloc.findAcaoByPapelContaining(texto);
