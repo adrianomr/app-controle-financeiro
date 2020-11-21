@@ -26,16 +26,29 @@ class AutoCompleteInputWidget extends StatelessWidget {
         return await filter(pattern);
       },
       itemBuilder: (context, suggestion) {
-        return ListTile(
-          title: Text(suggestion),
-        );
+        if (suggestion is String)
+          return ListTile(
+            title: Text(suggestion),
+          );
+        else
+          return ListTile(
+            title: Text(suggestion.text),
+          );
       },
       errorBuilder: (buildContext, object) => ListTile(
         title: Text("Nenhuma ação encontrada"),
       ),
       onSuggestionSelected: (suggestion) {
-        this._typeAheadController.text = suggestion;
-        if (callback != null) callback(suggestion);
+        if (callback != null) {
+          if (callback is String) {
+            this._typeAheadController.text = suggestion;
+            callback(suggestion);
+          }
+          this._typeAheadController.text = suggestion.text;
+          callback(suggestion.id, suggestion.text);
+        } else {
+          this._typeAheadController.text = null;
+        }
       },
     );
   }

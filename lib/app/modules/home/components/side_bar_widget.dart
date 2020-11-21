@@ -1,3 +1,4 @@
+import 'package:controle_financeiro/app/modules/provento/provento_module.dart';
 import 'package:controle_financeiro/app/modules/rebalanceamento/rebalanceamento_module.dart';
 import 'package:controle_financeiro/app/modules/transacao/transacao_module.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,10 @@ class SideBarWidget extends StatelessWidget {
           ),
           ListTile(
             title: Text('Proventos'),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ProventoModule()));
+            },
           ),
         ],
       ),

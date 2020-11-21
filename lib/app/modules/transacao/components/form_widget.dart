@@ -1,5 +1,5 @@
 import 'package:controle_financeiro/app/components/button/submit/submit_widget.dart';
-import 'package:controle_financeiro/app/components/fields/autocomplete_input_widget.dart';
+import 'package:controle_financeiro/app/components/fields/autocomplete/autocomplete_input_widget.dart';
 import 'package:controle_financeiro/app/components/fields/button_group_input_widget.dart';
 import 'package:controle_financeiro/app/components/fields/currency_input_widget.dart';
 import 'package:controle_financeiro/app/components/fields/date_input_widget.dart';
