@@ -13,7 +13,8 @@ class CadastroPageBloc extends BlocBase {
   AcaoBloc acaoBloc = ProventoModule.to.getBloc<AcaoBloc>();
   ProventoBloc proventoBloc = ProventoModule.to.getBloc<ProventoBloc>();
   Suggestion acaoSuggestion = Suggestion();
-  Provento provento = Provento(data: DateTime.now());
+  Provento provento =
+      Provento(data: DateTime.now(), dataPosicao: DateTime.now());
 
   findAcao(String texto) async {
     List<Acao> acoes = await acaoBloc.findAcaoByPapelContaining(texto);
@@ -26,7 +27,7 @@ class CadastroPageBloc extends BlocBase {
     provento.papel = papel;
   }
 
-  void changeData(DateTime data) {
+  void changeDataPagamento(DateTime data) {
     provento.data = data;
   }
 
@@ -41,5 +42,9 @@ class CadastroPageBloc extends BlocBase {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void changeDataPosicao(data) {
+    provento.dataPosicao = data;
   }
 }

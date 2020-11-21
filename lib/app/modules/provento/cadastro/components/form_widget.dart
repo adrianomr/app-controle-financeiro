@@ -33,11 +33,20 @@ class _FormWidgetState extends State<FormWidget> {
             ),
           ),
           DateInputWidget(
-            'Data',
+            'Data Posição',
             cadastroPageBloc.provento.data,
             callback: (data) {
               setState(() {
-                cadastroPageBloc.changeData(data);
+                cadastroPageBloc.changeDataPosicao(data);
+              });
+            },
+          ),
+          DateInputWidget(
+            'Data pagamento',
+            cadastroPageBloc.provento.data,
+            callback: (data) {
+              setState(() {
+                cadastroPageBloc.changeDataPagamento(data);
               });
             },
           ),
