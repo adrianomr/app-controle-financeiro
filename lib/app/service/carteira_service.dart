@@ -8,4 +8,8 @@ class CarteiraService {
   Future<Response> getCarteira() async {
     return await dio.get('$path/usuario/1/carteira');
   }
+
+  Future<Response> getCarteiraList() async {
+    return await dio.get('$path/carteira/', queryParameters: {'idUsuario': 1});
+  }
 }

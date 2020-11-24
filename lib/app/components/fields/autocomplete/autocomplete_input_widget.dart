@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-class AutoCompleteInputWidget extends StatelessWidget {
+class AutoCompleteInputWidget extends StatefulWidget {
   String _label;
   Function filter;
   Function callback;
 
   AutoCompleteInputWidget(this._label, {this.filter, this.callback});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _AutoCompleteInputWidgetState();
+  }
+}
+
+class _AutoCompleteInputWidgetState extends State<AutoCompleteInputWidget> {
   final TextEditingController _typeAheadController = TextEditingController();
+  TypeAheadField _typeAheadField;
   String _selected;
 
   @override
@@ -20,10 +28,10 @@ class AutoCompleteInputWidget extends StatelessWidget {
           style: DefaultTextStyle.of(context)
               .style
               .copyWith(fontStyle: FontStyle.italic),
-          decoration:
-              InputDecoration(labelText: _label, border: OutlineInputBorder())),
+          decoration: InputDecoration(
+              labelText: widget._label, border: OutlineInputBorder())),
       suggestionsCallback: (pattern) async {
-        return await filter(pattern);
+        return await widget.filter(pattern);
       },
       itemBuilder: (context, suggestion) {
         if (suggestion is String)
@@ -39,13 +47,14 @@ class AutoCompleteInputWidget extends StatelessWidget {
         title: Text("Nenhuma ação encontrada"),
       ),
       onSuggestionSelected: (suggestion) {
-        if (callback != null) {
-          if (callback is String) {
+        if (suggestion != null) {
+          if (suggestion is String) {
             this._typeAheadController.text = suggestion;
-            callback(suggestion);
+            widget.callback(suggestion);
+          } else {
+            this._typeAheadController.text = suggestion.text;
+            widget.callback(suggestion.id, suggestion.text);
           }
-          this._typeAheadController.text = suggestion.text;
-          callback(suggestion.id, suggestion.text);
         } else {
           this._typeAheadController.text = null;
         }
