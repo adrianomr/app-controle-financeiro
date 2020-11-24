@@ -4,15 +4,18 @@ import 'package:controle_financeiro/app/bloc/rebalanceamento_bloc.dart';
 import 'package:controle_financeiro/app/model/acao_model.dart';
 import 'package:controle_financeiro/app/model/rebalanceamento_model.dart';
 import 'package:controle_financeiro/app/modules/rebalanceamento/rebalanceamento_module.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RebalanceamentoPageBloc extends BlocBase {
+  final formKey = GlobalKey<FormState>();
   AcaoBloc acaoBloc = RebalanceamentoModule.to.getBloc<AcaoBloc>();
   RebalanceamentoBloc rebalanceamentoBloc =
       RebalanceamentoModule.to.getBloc<RebalanceamentoBloc>();
-  Rebalanceamento rebalanceamento = Rebalanceamento(acao: Acao());
+  Rebalanceamento rebalanceamento = Rebalanceamento();
   BehaviorSubject<List<Rebalanceamento>> rebalanceamentoListBehaviorSubject =
       BehaviorSubject();
+  bool digitarPercentual = false;
 
   @override
   void dispose() {
@@ -35,13 +38,12 @@ class RebalanceamentoPageBloc extends BlocBase {
   }
 
   changePapel(String papel) {
-    rebalanceamento.acao.papel = papel;
+    rebalanceamento.papel = papel;
   }
 
   submit() async {
-    List<Acao> acoes =
-        await acaoBloc.findAcaoByPapelContaining(rebalanceamento.acao.papel);
-    rebalanceamento.acao = acoes[0];
+    if (!digitarPercentual)
+      rebalanceamento.percentual = null;
     await rebalanceamentoBloc.criaRebalanceamento(rebalanceamento);
     await getRebalanceamentoList();
   }
@@ -49,5 +51,13 @@ class RebalanceamentoPageBloc extends BlocBase {
   Future<void> delete(Rebalanceamento rebalanceamento) async {
     await rebalanceamentoBloc.delete(rebalanceamento);
     await getRebalanceamentoList();
+  }
+
+  changeNota(double nota) {
+    rebalanceamento.nota = nota;
+  }
+
+  void changeDigitarPercentual(bool value) {
+    digitarPercentual = value;
   }
 }

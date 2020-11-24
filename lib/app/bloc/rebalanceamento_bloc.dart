@@ -1,7 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/model/rebalanceamento_model.dart';
-import 'package:controle_financeiro/app/model/usuario_model.dart';
 import 'package:controle_financeiro/app/service/rebalanceamento_service.dart';
 import 'package:dio/dio.dart';
 
@@ -26,7 +25,7 @@ class RebalanceamentoBloc extends BlocBase {
   }
 
   Rebalanceamento addUsuario(Rebalanceamento rebalanceamento) {
-    rebalanceamento.usuario = Usuario(id: 1, nome: "Adriano");
+    rebalanceamento.idUsuario = 1;
     return rebalanceamento;
   }
 
