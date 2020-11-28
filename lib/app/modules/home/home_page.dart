@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:controle_financeiro/app/components/charts/pie_chart/pie_chart_widget.dart';
 import 'package:controle_financeiro/app/components/slider/full_screen_slider_component.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
+import 'package:controle_financeiro/app/model/risco_dto.dart';
 import 'package:controle_financeiro/app/modules/home/components/info_gerais_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/rebalanceamento_panel_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/risco_panel_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/side_bar_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/tabela_acoes_widget.dart';
 import 'package:controle_financeiro/app/modules/home/home_bloc.dart';
@@ -32,6 +34,11 @@ class _HomePageState extends State<HomePage> {
       log("não foi possivel buscar a carteira");
     }
     try {
+      _homeBloc.buscaRiscoCarteira();
+    } catch (e) {
+      log("não foi possivel buscar dados de risco da carteira");
+    }
+    try {
       _homeBloc.buscaCarteiraRebalanceamento();
     } catch (e) {
       log("não foi possivel buscar a carteira de rebalanceamento");
@@ -50,8 +57,11 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               getInfoGerais(),
               Expanded(
-                child: FullScreenSliderComponent(
-                    <Widget>[getPanel(), getRebalanceamentoPanel()]),
+                child: FullScreenSliderComponent(<Widget>[
+                  getPanel(),
+                  getRebalanceamentoPanel(),
+                  getRiscoPanel()
+                ]),
               ),
             ],
           ),
@@ -119,6 +129,17 @@ class _HomePageState extends State<HomePage> {
           if (carteira == null) return Container();
           return RebalanceamentoPanelWidget(
               _homeBloc.generateRebalanceamentoSeriesFromCarteira(carteira));
+        });
+  }
+
+  getRiscoPanel() {
+    return StreamBuilder(
+        stream: _homeBloc.riscoCarteiraBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          RiscoDto riscoDto = snapshot.data;
+          if (riscoDto == null) return Container();
+          return RiscoPanelWidget(
+              _homeBloc.generateRiscoSeries(riscoDto));
         });
   }
 }

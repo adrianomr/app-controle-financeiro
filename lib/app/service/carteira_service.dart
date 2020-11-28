@@ -12,4 +12,12 @@ class CarteiraService {
   Future<Response> getCarteiraList() async {
     return await dio.get('$path/carteira/', queryParameters: {'idUsuario': 1});
   }
+
+  Future<Response> getRiscoCarteira() async {
+    return await dio.get('$path/carteira/risco', queryParameters: {
+      'idUsuario': 1,
+      'riscoBaixoMedio': 7,
+      'riscoMedioAlto': 8.5,
+    });
+  }
 }
