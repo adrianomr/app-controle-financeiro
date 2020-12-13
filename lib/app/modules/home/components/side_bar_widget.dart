@@ -1,3 +1,4 @@
+import 'package:controle_financeiro/app/modules/grupo_acao/grupo_acao_module.dart';
 import 'package:controle_financeiro/app/modules/provento/provento_module.dart';
 import 'package:controle_financeiro/app/modules/rebalanceamento/rebalanceamento_module.dart';
 import 'package:controle_financeiro/app/modules/subscricao/subscricao_module.dart';
@@ -43,6 +44,13 @@ class SideBarWidget extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => SubscricaoModule()));
+            },
+          ),
+          ListTile(
+            title: Text('Grupo de Ações'),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => GrupoAcaoModule()));
             },
           ),
         ],
