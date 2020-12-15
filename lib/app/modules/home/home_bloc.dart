@@ -1,11 +1,14 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:controle_financeiro/app/bloc/carteira_bloc.dart';
+import 'package:controle_financeiro/app/bloc/grupo_acao_bloc.dart';
 import 'package:controle_financeiro/app/bloc/rebalanceamento_bloc.dart';
 import 'package:controle_financeiro/app/components/charts/model/basic_model.dart';
 import 'package:controle_financeiro/app/model/acao_model.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
+import 'package:controle_financeiro/app/model/grupo_acao.dart';
 import 'package:controle_financeiro/app/model/risco_dto.dart';
+import 'package:controle_financeiro/app/model/sub_grupo_acao_chart.dart';
 import 'package:controle_financeiro/app/modules/home/home_module.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,9 +19,12 @@ class HomeBloc extends BlocBase {
   BehaviorSubject<Carteira> carteiraRebalanceamentoBehaviorSubject =
       BehaviorSubject();
   BehaviorSubject<RiscoDto> riscoCarteiraBehaviorSubject = BehaviorSubject();
+  BehaviorSubject<SubGrupoAcaoChart> subgrupoAcaoChartBehaviorSubject =
+      BehaviorSubject();
   CarteiraBloc carteiraBloc = HomeModule.to.getBloc<CarteiraBloc>();
   RebalanceamentoBloc rebalanceamentoBloc =
       HomeModule.to.getBloc<RebalanceamentoBloc>();
+  GrupoAcaoBloc grupoAcaoBloc = HomeModule.to.getBloc<GrupoAcaoBloc>();
 
   buscaCarteira() async {
     Carteira carteira = await carteiraBloc.getCarteira();
@@ -33,6 +39,12 @@ class HomeBloc extends BlocBase {
   buscaCarteiraRebalanceamento() async {
     Carteira carteira = await rebalanceamentoBloc.getCarteiraRebalanceamento();
     carteiraRebalanceamentoBehaviorSubject.add(carteira);
+  }
+
+  buscaSubgrupoAcaoChart() async {
+    SubGrupoAcaoChart subgrupoAcaoChart =
+        await grupoAcaoBloc.buscaSubgrupoAcaoChart();
+    subgrupoAcaoChartBehaviorSubject.add(subgrupoAcaoChart);
   }
 
   List<Series> generateSeriesFromCarteira(Carteira carteira) {
@@ -80,16 +92,17 @@ class HomeBloc extends BlocBase {
     carteiraBehaviorSubject.close();
     carteiraRebalanceamentoBehaviorSubject.close();
     riscoCarteiraBehaviorSubject.close();
+    subgrupoAcaoChartBehaviorSubject.close();
     super.dispose();
   }
 
   List<Series<dynamic, String>> generateRiscoSeries(RiscoDto riscoDto) {
     List<BasicModel> riscoCarteira = [
       BasicModel('Risco Alto', riscoDto.riscoAltoPercentual, color: Colors.red),
-      BasicModel(
-          'Risco Médio', riscoDto.riscoMedioPercentual, color: Colors.yellow),
-      BasicModel(
-          'Risco Baixo', riscoDto.riscoBaixoPercentual, color: Colors.green),
+      BasicModel('Risco Médio', riscoDto.riscoMedioPercentual,
+          color: Colors.yellow),
+      BasicModel('Risco Baixo', riscoDto.riscoBaixoPercentual,
+          color: Colors.green),
     ];
     return [
       new Series<BasicModel, String>(
@@ -101,6 +114,27 @@ class HomeBloc extends BlocBase {
         labelAccessorFn: (model, index) =>
         "${NumberFormat.percentPattern("pt_BR").format(model.value)}",
         data: riscoCarteira,
+      ),
+      // Set the 'Los Angeles Revenue' series to use the secondary measure axis.
+      // All series that have this set will use the secondary measure axis.
+      // All other series will use the primary measure axis.
+    ];
+  }
+
+  List<Series<dynamic, String>> generateSubgrupoAcoesSeries(
+      SubGrupoAcaoChart subGrupoAcaoChart) {
+    return [
+      new Series<GrupoAcao, String>(
+        id: 'Global Revenue',
+        domainFn: (GrupoAcao model, _) => model.nome,
+        measureFn: (GrupoAcao model, _) =>
+        subGrupoAcaoChart.valorTotal > 0 ? model.valorInvestido /
+            subGrupoAcaoChart.valorTotal : 0,
+        labelAccessorFn: (model, index) =>
+        "${model.nome} (${NumberFormat.percentPattern("pt_BR").format(
+            subGrupoAcaoChart.valorTotal > 0 ? model.valorInvestido /
+                subGrupoAcaoChart.valorTotal : 0)})",
+        data: subGrupoAcaoChart.grupoAcaoList,
       ),
       // Set the 'Los Angeles Revenue' series to use the secondary measure axis.
       // All series that have this set will use the secondary measure axis.

@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:controle_financeiro/app/model/grupo_acao.dart';
+import 'package:controle_financeiro/app/model/sub_grupo_acao_chart.dart';
 import 'package:controle_financeiro/app/service/grupo_acao_service.dart';
 import 'package:dio/dio.dart';
 
@@ -15,6 +16,11 @@ class GrupoAcaoBloc extends BlocBase {
       });
     }
     return grupoAcaoList;
+  }
+
+  Future<SubGrupoAcaoChart> buscaSubgrupoAcaoChart() async {
+    Response response = await grupoAcaoService.chartSubgrupo();
+    return SubGrupoAcaoChart.fromJson(response.data);
   }
 
   Future<bool> delete(GrupoAcao grupoAcao) async {

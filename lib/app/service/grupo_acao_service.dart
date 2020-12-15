@@ -15,6 +15,12 @@ class GrupoAcaoService {
         .get(path, queryParameters: {'idUsuario': 1, 'onlySubgroups': true});
   }
 
+  Future<Response> chartSubgrupo() async {
+    return await dio.get('$path/chart/subgrupo', queryParameters: {
+      'idUsuario': 1,
+    });
+  }
+
   Future<Response> delete(int id) async {
     return await dio.delete('$path/$id');
   }

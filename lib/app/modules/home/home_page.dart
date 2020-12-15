@@ -4,10 +4,12 @@ import 'package:controle_financeiro/app/components/charts/pie_chart/pie_chart_wi
 import 'package:controle_financeiro/app/components/slider/full_screen_slider_component.dart';
 import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/model/risco_dto.dart';
+import 'package:controle_financeiro/app/model/sub_grupo_acao_chart.dart';
 import 'package:controle_financeiro/app/modules/home/components/info_gerais_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/rebalanceamento_panel_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/risco_panel_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/side_bar_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/subgrupo_acao_panel_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/tabela_acoes_widget.dart';
 import 'package:controle_financeiro/app/modules/home/home_bloc.dart';
 import 'package:controle_financeiro/app/modules/home/home_module.dart';
@@ -43,6 +45,11 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       log("não foi possivel buscar a carteira de rebalanceamento");
     }
+    try {
+      _homeBloc.buscaSubgrupoAcaoChart();
+    } catch (e) {
+      log("não foi possivel buscar dados de subgrupos de ações");
+    }
     super.initState();
   }
 
@@ -60,7 +67,8 @@ class _HomePageState extends State<HomePage> {
                 child: FullScreenSliderComponent(<Widget>[
                   getPanel(),
                   getRebalanceamentoPanel(),
-                  getRiscoPanel()
+                  getRiscoPanel(),
+                  getGrupoAcoesPanel(),
                 ]),
               ),
             ],
@@ -138,8 +146,23 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           RiscoDto riscoDto = snapshot.data;
           if (riscoDto == null) return Container();
-          return RiscoPanelWidget(
-              _homeBloc.generateRiscoSeries(riscoDto));
+          return RiscoPanelWidget(_homeBloc.generateRiscoSeries(riscoDto));
+        });
+  }
+
+  getGrupoAcoesPanel() {
+    return StreamBuilder(
+        stream: _homeBloc.subgrupoAcaoChartBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          SubGrupoAcaoChart subgrupoAcaoChart = snapshot.data;
+          if (subgrupoAcaoChart == null || subgrupoAcaoChart.valorTotal <= 0)
+            return Container(
+              child: Center(
+                child: Text("Não há dados"),
+              ),
+            );
+          return SubgrupoAcoesWidget(
+              _homeBloc.generateSubgrupoAcoesSeries(subgrupoAcaoChart));
         });
   }
 }

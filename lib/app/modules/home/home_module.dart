@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:controle_financeiro/app/bloc/carteira_bloc.dart';
+import 'package:controle_financeiro/app/bloc/grupo_acao_bloc.dart';
 import 'package:controle_financeiro/app/bloc/rebalanceamento_bloc.dart';
 import 'package:controle_financeiro/app/modules/home/home_bloc.dart';
 import 'package:controle_financeiro/app/modules/home/home_page.dart';
@@ -12,6 +13,7 @@ class HomeModule extends ModuleWidget {
         Bloc((i) => HomeBloc()),
         Bloc((i) => CarteiraBloc()),
         Bloc((i) => RebalanceamentoBloc()),
+        Bloc((i) => GrupoAcaoBloc()),
       ];
 
   @override
