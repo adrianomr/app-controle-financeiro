@@ -6,11 +6,11 @@ import 'package:controle_financeiro/app/model/carteira_model.dart';
 import 'package:controle_financeiro/app/model/risco_dto.dart';
 import 'package:controle_financeiro/app/model/sub_grupo_acao_chart.dart';
 import 'package:controle_financeiro/app/modules/home/components/info_gerais_widget.dart';
-import 'package:controle_financeiro/app/modules/home/components/rebalanceamento_panel_widget.dart';
-import 'package:controle_financeiro/app/modules/home/components/risco_panel_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/panel/rebalanceamento_panel_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/panel/risco_panel_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/panel/subgrupo_acao_panel_widget.dart';
+import 'package:controle_financeiro/app/modules/home/components/panel/tabela_acoes_widget.dart';
 import 'package:controle_financeiro/app/modules/home/components/side_bar_widget.dart';
-import 'package:controle_financeiro/app/modules/home/components/subgrupo_acao_panel_widget.dart';
-import 'package:controle_financeiro/app/modules/home/components/tabela_acoes_widget.dart';
 import 'package:controle_financeiro/app/modules/home/home_bloc.dart';
 import 'package:controle_financeiro/app/modules/home/home_module.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage> {
                 child: FullScreenSliderComponent(<Widget>[
                   getPanel(),
                   getRebalanceamentoPanel(),
+                  getAtualVsIdealPanel(),
                   getRiscoPanel(),
                   getGrupoAcoesPanel(),
                 ]),
@@ -137,6 +138,17 @@ class _HomePageState extends State<HomePage> {
           if (carteira == null) return Container();
           return RebalanceamentoPanelWidget(
               _homeBloc.generateRebalanceamentoSeriesFromCarteira(carteira));
+        });
+  }
+
+  getAtualVsIdealPanel() {
+    return StreamBuilder(
+        stream: _homeBloc.carteiraRebalanceamentoBehaviorSubject.stream,
+        builder: (context, snapshot) {
+          Carteira carteira = snapshot.data;
+          if (carteira == null) return Container();
+          return RebalanceamentoPanelWidget(
+              _homeBloc.generateAtualVsIdealSeriesFromCarteira(carteira));
         });
   }
 

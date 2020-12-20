@@ -54,7 +54,6 @@ class HomeBloc extends BlocBase {
         domainFn: (Acao acao, _) => acao.papel,
         measureFn: (Acao acao, _) => acao.valor * acao.quantidade,
         data: carteira.acoes,
-        // Set a label accessor to control the text of the arc label.
         labelAccessorFn: (Acao acao, _) =>
             '${acao.papel} (${NumberFormat.percentPattern().format((acao.valor * acao.quantidade) / carteira.valorAtual)})',
       )
@@ -80,11 +79,29 @@ class HomeBloc extends BlocBase {
         labelAccessorFn: (acao, index) =>
             "${NumberFormat.currency(locale: "pt_BR", symbol: "R\$").format((acao.percentualRebalanceamento / 100) * carteira.valorAtual)}",
         data: carteira.acoes,
-      )
-      // Set the 'Los Angeles Revenue' series to use the secondary measure axis.
-      // All series that have this set will use the secondary measure axis.
-      // All other series will use the primary measure axis.
+      ),
     ];
+  }
+
+  List<Series<dynamic, String>> generateAtualVsIdealSeriesFromCarteira(
+      Carteira carteira) {
+    return [
+      new Series<Acao, String>(
+        id: 'Los Angeles Revenue',
+        domainFn: (Acao acao, _) => acao.papel,
+        measureFn: (Acao acao, _) => calculateValorInvestir(acao, carteira),
+        labelAccessorFn: (acao, index) =>
+            "${NumberFormat.currency(locale: "pt_BR", symbol: "R\$").format(calculateValorInvestir(acao, carteira))}",
+        data: carteira.acoes,
+      ),
+    ];
+  }
+
+  double calculateValorInvestir(Acao acao, Carteira carteira) {
+    double valor =
+        (acao.percentualRebalanceamento / 100) * carteira.valorAtual -
+            acao.valor * acao.quantidade;
+    return valor > 0 ? valor : 0;
   }
 
   @override
@@ -128,8 +145,9 @@ class HomeBloc extends BlocBase {
         id: 'Global Revenue',
         domainFn: (GrupoAcao model, _) => model.nome,
         measureFn: (GrupoAcao model, _) =>
-        subGrupoAcaoChart.valorTotal > 0 ? model.valorInvestido /
-            subGrupoAcaoChart.valorTotal : 0,
+        subGrupoAcaoChart.valorTotal > 0
+            ? model.valorInvestido / subGrupoAcaoChart.valorTotal
+            : 0,
         labelAccessorFn: (model, index) =>
         "${model.nome} (${NumberFormat.percentPattern("pt_BR").format(
             subGrupoAcaoChart.valorTotal > 0 ? model.valorInvestido /
